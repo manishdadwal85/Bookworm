@@ -2,6 +2,7 @@ package com.bookworm.bookworm;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +40,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Timestamp;
@@ -51,7 +54,7 @@ public class sell extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String categorySel,formatSel,tenureSel,languageSel,imageid1,imageid2;
     private CharSequence[] options={"Take Photo","Gallery","Close"};
-    private Integer REQUEST_CAMERA = 101, SELECT_FILE = 102;
+    private Integer REQUEST_CAMERA_1 = 101, SELECT_FILE_1 = 102, REQUEST_CAMERA_2 = 101, SELECT_FILE_2 = 102;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -246,7 +249,7 @@ public class sell extends AppCompatActivity {
                             if (!hasPermissions(sell.this)) {
                                 ActivityCompat.requestPermissions(sell.this, PERMISSIONS, PERMISSION_ALL);
                             } else {
-                                openCamera();
+                                openCamera1();
                             }
                         }
                         else if(options[i].equals("Gallery"))
@@ -254,7 +257,7 @@ public class sell extends AppCompatActivity {
                             if (!hasPermissions(sell.this)) {
                                 ActivityCompat.requestPermissions(sell.this, PERMISSIONS, PERMISSION_ALL);
                             } else {
-                                gallerys();
+                                gallerys1();
                             }
                         }
                         else if(options[i].equals(""))
@@ -280,7 +283,7 @@ public class sell extends AppCompatActivity {
                             if (!hasPermissions(sell.this)) {
                                 ActivityCompat.requestPermissions(sell.this, PERMISSIONS, PERMISSION_ALL);
                             } else {
-                                openCamera();
+                                openCamera2();
                             }
                         }
                         else if(options[i].equals("Gallery"))
@@ -288,7 +291,7 @@ public class sell extends AppCompatActivity {
                             if (!hasPermissions(sell.this)) {
                                 ActivityCompat.requestPermissions(sell.this, PERMISSIONS, PERMISSION_ALL);
                             } else {
-                                gallerys();
+                                gallerys2();
                             }
                         }
                         else if(options[i].equals(""))
@@ -306,18 +309,36 @@ public class sell extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA) {
+        if (requestCode == REQUEST_CAMERA_1) {
             if (resultCode == Activity.RESULT_OK) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 progresssell.setVisibility(View.VISIBLE);
-                uploadfront(bitmap);
+                Uri imagedata = (Uri) data.getExtras().get("data");
+                uploadfront(imagedata);
             }
-        } else if (requestCode == SELECT_FILE) {
+        }else if (requestCode == REQUEST_CAMERA_2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                progresssell.setVisibility(View.VISIBLE);
+                Uri imagedata = (Uri) data.getExtras().get("data");
+                uploadBack(imagedata);
+            }
+        } else if (requestCode == SELECT_FILE_1) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri imagedata = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(sell.this.getContentResolver(), imagedata);
-                    uploadfront(bitmap);
+                    uploadfront(imagedata);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else if (requestCode == SELECT_FILE_2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri imagedata = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(sell.this.getContentResolver(), imagedata);
+                    uploadBack(imagedata);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -325,25 +346,36 @@ public class sell extends AppCompatActivity {
         }
     }
 
-    private void gallerys() {
+    private void gallerys1() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent, "Select image"), SELECT_FILE);
+        startActivityForResult(intent.createChooser(intent, "Select image"), SELECT_FILE_1);
     }
 
-    private void openCamera() {
+    private void openCamera1() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        startActivityForResult(intent, REQUEST_CAMERA_1);
+    }
+
+    private void gallerys2() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent.createChooser(intent, "Select image"), SELECT_FILE_2);
+    }
+
+    private void openCamera2() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA_2);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-            if (requestCode == REQUEST_CAMERA)
-                openCamera();
-            else if (requestCode == SELECT_FILE)
-                gallerys();
+            if (requestCode == REQUEST_CAMERA_1)
+                openCamera1();
+            else if (requestCode == SELECT_FILE_1)
+                gallerys1();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(sell.this);
             builder.setMessage("Permission not granted").setTitle("Permission Error");
@@ -358,20 +390,23 @@ public class sell extends AppCompatActivity {
         }
     }
 
-    public void uploadfront(Bitmap bitmap1) {
+    public void uploadfront(Uri imageUri) {
         String date=new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference refrence = storage.getReferenceFromUrl("gs://bookworm-25e0d.appspot.com");
-        final StorageReference storageReference = refrence.child(md5(date));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] data = byteArrayOutputStream.toByteArray();
-        UploadTask uploadTask = storageReference.putBytes(data);
+        //FirebaseStorage storage = FirebaseStorage.getInstance();
+        //StorageReference refrence = storage.getReferenceFromUrl("gs://bookworm-25e0d.appspot.com");
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference("Uploads");
+        //final StorageReference storageReference = refrence.child(md5(date));
+        //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        //byte[] data = byteArrayOutputStream.toByteArray();
+        //UploadTask uploadTask = storageReference.putBytes(data);
+        final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        UploadTask uploadTask = fileReference.putFile(imageUri);
         Log.i("upload", "uploads started1");
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
@@ -396,6 +431,48 @@ public class sell extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void uploadBack( Uri imageUri) {
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference("Uploads");
+
+        final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        UploadTask uploadTask = fileReference.putFile(imageUri);
+        Log.i("upload", "uploads started1");
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("image", task.getResult().toString()+ "status"+f);
+                            imageid1=task.getResult().toString();
+                            if(f)
+                            {
+                                FirebaseDatabase.getInstance().getReference().child("Books").child("image2").setValue(imageid1);
+                                f=false;
+                                progresssell.setVisibility(View.INVISIBLE);
+                            }
+                            if(f2)
+                            {
+
+                                FirebaseDatabase.getInstance().getReference().child("Books").child("image").setValue(imageid1);
+                                Log.i("image logged", task.getResult().toString());
+                                f2=false;
+                                progresssell.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
     public static final String md5(final String s) {
         final String MD5 = "MD5";

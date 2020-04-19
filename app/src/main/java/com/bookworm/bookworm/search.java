@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -133,6 +134,7 @@ public class search extends AppCompatActivity {
             final ImageView image=(ImageView)view.findViewById(R.id.mainimage);
             final TextView texttitle=(TextView)view.findViewById(R.id.texttitle);
             final TextView price=(TextView)view.findViewById(R.id.price);
+            Glide.with(getApplicationContext()).load(lists.front_image).into(image);
             //Picasso.get().load(lists.front_image).resize(170,145).centerCrop().into(image);
             texttitle.setText(lists.name);
             price.setText("Price: "+lists.price);
