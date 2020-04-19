@@ -36,7 +36,6 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
                     android:textColor="@color/colorPrflTitle"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -149,7 +148,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email: "
@@ -157,10 +155,12 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="sdsdfsfsdfsdfdsfsdfdsfdfs"
+                    android:inputType="textEmailAddress"
+                    android:textSize="20sp"
                     android:textColor="@color/colorPrflTitleWhite"/>
             </LinearLayout>
 
@@ -170,7 +170,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone: "
@@ -179,10 +178,19 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="9900990090"
+                    android:enabled="false"
                     android:textColor="@color/colorPrflTitleWhite"/>
+                <ImageButton
+                    android:id="@+id/editPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/colorPrflBack"
+                    android:src="@drawable/ic_edit_24px"
+                    android:tag="@drawable/ic_edit_24px"/>
             </LinearLayout>
 
             <LinearLayout
@@ -191,7 +199,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/pincode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Area Pin: "
@@ -200,10 +207,20 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/pincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="776677"
+                    android:enabled="false"
                     android:textColor="@color/colorPrflTitleWhite"/>
+
+                <ImageButton
+                    android:id="@+id/editPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/colorPrflBack"
+                    android:src="@drawable/ic_edit_24px"
+                    android:tag="@drawable/ic_edit_24px"/>
             </LinearLayout>
         </LinearLayout>
 
