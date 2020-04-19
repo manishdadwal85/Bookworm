@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
+                            android:text="@string/BookName"
                             android:textSize="25sp"
                             android:textStyle="bold" />
 
@@ -101,8 +101,9 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
+                            android:text="@string/book_descr"
                             android:textSize="20sp" />
+
 
                         <TextView
                             android:id="@+id/bookprice"
@@ -111,50 +112,79 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
-                            android:textSize="20sp" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/seller"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/selleraddress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
+                            android:text="@string/book_price"
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/selleremail"
+                            android:id="@+id/bookrent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
+                            android:text="@string/book_rent"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/booktenure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/book_tenure"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/bookauthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/book_author"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/bookcategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/book_category"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/booktype"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/book_type"
                             android:textSize="20sp" />
 
 
+
                         <TextView
-                            android:id="@+id/sellerphone"
+                            android:id="@+id/booklanguage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/app_name"
+                            android:text="@string/book_language"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/bookcondition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/book_condition"
                             android:textSize="20sp" />
 
 

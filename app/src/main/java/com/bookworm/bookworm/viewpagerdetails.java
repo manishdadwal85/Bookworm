@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class viewpagerdetails extends PagerAdapter {
         View itemView = layoutInflater.inflate(R.layout.viewbooklayout, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.viewpagers);
-        Picasso.get().load(imagedesc.get(position)).fit().centerInside().into(imageView);
+        Glide.with(context.getApplicationContext()).load(imagedesc.get(position)).into(imageView);
+        //Picasso.get().load(imagedesc.get(position)).fit().centerInside().into(imageView);
 
         container.addView(itemView,0);
         return itemView;

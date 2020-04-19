@@ -26,7 +26,7 @@ public class Viewbook extends AppCompatActivity {
 
     private ViewPager imageviewpager;
     private ArrayList<desclist> arrayList=new ArrayList<>();
-    private TextView bookname,bookdesc,bookprice,selleradress,selleremail,sellerphone;
+    private TextView bookname,bookdesc,bookprice, bookrent, booktenure, booklanguage, bookauthor, booktype, bookcategory, bookCond;
     private RelativeLayout progress;
     private ArrayList<String> imagearray=new ArrayList<>();
     private SpringDotsIndicator dotsIndicator;
@@ -44,10 +44,15 @@ public class Viewbook extends AppCompatActivity {
         bookname=(TextView)findViewById(R.id.bookname);
         bookdesc=(TextView)findViewById(R.id.bookdescribe);
         bookprice=(TextView)findViewById(R.id.bookprice);
-        selleradress=(TextView)findViewById(R.id.selleraddress);
+        bookprice=(TextView)findViewById(R.id.bookprice);
+        bookrent=(TextView)findViewById(R.id.bookrent);
+        booktenure=(TextView)findViewById(R.id.booktenure);
+        booklanguage=(TextView)findViewById(R.id.booklanguage);
+        bookauthor=(TextView)findViewById(R.id.bookauthor);
+        booktype=(TextView)findViewById(R.id.booktype);
+        bookcategory=(TextView)findViewById(R.id.bookcategory);
+        bookCond=(TextView)findViewById(R.id.bookcondition);
         dotsIndicator = (SpringDotsIndicator) findViewById(R.id.dot_indicator);
-        selleremail=(TextView)findViewById(R.id.selleremail);
-        sellerphone=(TextView)findViewById(R.id.sellerphone);
         progress=(RelativeLayout)findViewById(R.id.progress);
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
         progress.setVisibility(View.VISIBLE);
@@ -80,16 +85,20 @@ public class Viewbook extends AppCompatActivity {
     private void updateui()
     {
         Log.i("demo",""+arrayList.get(0).booknames);
-       // imagearray.add(arrayList.get(0).image1);
-       // imagearray.add(arrayList.get(0).image2);
-        //imageviewpager.setAdapter(new viewpagerdetails(Viewbook.this,imagearray));
+        imagearray.add(arrayList.get(0).image1);
+        imagearray.add(arrayList.get(0).image2);
+        imageviewpager.setAdapter(new viewpagerdetails(Viewbook.this,imagearray));
         dotsIndicator.setViewPager(imageviewpager);
         bookname.setText(arrayList.get(0).booknames);
         bookdesc.setText("Description : "+arrayList.get(0).bookdesc);
         bookprice.setText("Price: "+arrayList.get(0).bookprice);
-        //selleradress.setText("Address: "+arrayList.get(0).selleraddress);
-        //selleremail.setText("Email :"+arrayList.get(0).selleremail);
-        //sellerphone.setText("Phone Number : "+arrayList.get(0).sellerphone);
+        bookrent.setText("Price: "+arrayList.get(0).rent);
+        booktenure.setText("Price: "+arrayList.get(0).tenure);
+        booklanguage.setText("Price: "+arrayList.get(0).language);
+        bookauthor.setText("Price: "+arrayList.get(0).author);
+        booktype.setText("Price: "+arrayList.get(0).format);
+        bookcategory.setText("Price: "+arrayList.get(0).category);
+        bookCond.setText("Price: "+arrayList.get(0).condition);
         progress.setVisibility(View.INVISIBLE);
     }
 }
