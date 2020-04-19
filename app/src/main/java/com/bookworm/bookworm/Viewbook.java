@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Viewbook extends AppCompatActivity {
 
@@ -56,10 +57,15 @@ public class Viewbook extends AppCompatActivity {
                        if(dataSnapshot.exists())
                        {
                            Log.i("demo",""+dataSnapshot.child("name").getValue().toString());
-                           arrayList.add(new desclist(dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("image2").getValue().toString()
-                           ,dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("Description").getValue().toString()
-                           ,dataSnapshot.child("price").getValue().toString(),dataSnapshot.child("Seller Address").getValue().toString()
-                                   ,dataSnapshot.child("email").getValue().toString(),dataSnapshot.child("Phone Number").getValue().toString()));
+
+                           HashMap<String,String> nmap=(HashMap<String, String>) dataSnapshot.getValue();
+
+                           arrayList.add(new desclist(nmap.get("front_image"),nmap.get("back_image")
+                           ,nmap.get("name"),nmap.get("description")
+                           ,nmap.get("price"),nmap.get("author")
+                                   ,nmap.get("category"),nmap.get("condition")
+                                   ,nmap.get("format"),nmap.get("language")
+                                    ,nmap.get("rent"),nmap.get("tenure")));
                        }
                        updateui();
                     }
@@ -73,17 +79,17 @@ public class Viewbook extends AppCompatActivity {
 
     private void updateui()
     {
-        Log.i("demo",""+arrayList.get(0).sellerphone);
-        imagearray.add(arrayList.get(0).image1);
-        imagearray.add(arrayList.get(0).image2);
-        imageviewpager.setAdapter(new viewpagerdetails(Viewbook.this,imagearray));
+        Log.i("demo",""+arrayList.get(0).booknames);
+       // imagearray.add(arrayList.get(0).image1);
+       // imagearray.add(arrayList.get(0).image2);
+        //imageviewpager.setAdapter(new viewpagerdetails(Viewbook.this,imagearray));
         dotsIndicator.setViewPager(imageviewpager);
         bookname.setText(arrayList.get(0).booknames);
         bookdesc.setText("Description : "+arrayList.get(0).bookdesc);
         bookprice.setText("Price: "+arrayList.get(0).bookprice);
-        selleradress.setText("Address: "+arrayList.get(0).selleraddress);
-        selleremail.setText("Email :"+arrayList.get(0).selleremail);
-        sellerphone.setText("Phone Number : "+arrayList.get(0).sellerphone);
+        //selleradress.setText("Address: "+arrayList.get(0).selleraddress);
+        //selleremail.setText("Email :"+arrayList.get(0).selleremail);
+        //sellerphone.setText("Phone Number : "+arrayList.get(0).sellerphone);
         progress.setVisibility(View.INVISIBLE);
     }
 }
