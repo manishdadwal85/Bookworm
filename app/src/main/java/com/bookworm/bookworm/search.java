@@ -65,23 +65,22 @@ public class search extends AppCompatActivity {
                            {
                                for(DataSnapshot s:dataSnapshot.getChildren())
                                {
-                                   for(DataSnapshot s1:s.getChildren())
-                                   {
-                                       for(DataSnapshot s2:s1.getChildren())
-                                       {
-                                           for(DataSnapshot s3:s2.getChildren())
-                                           {
-                                               HashMap<String,String> nmap=(HashMap<String, String>) s3.getValue();
-                                              // Log.i("demo",""+nmap.get("name") + "key "+s3.getKey()+" subject "+
-                                               //s2.getKey()+ "semester"+s1.getKey() +"course "+s.getKey());
-                                               if(nmap.get("name").toLowerCase().contains(searchtext.getText().toString().toLowerCase()))
+                                   //for(DataSnapshot s1:s.getChildren())
+                                   //{
+                                       //for(DataSnapshot s2:s1.getChildren())
+                                       //{
+                                        //   for(DataSnapshot s3:s2.getChildren())
+                                          // {
+                                               HashMap<String,String> nmap=(HashMap<String, String>) s.getValue();
+
+                                                if(nmap.get("freetext").toLowerCase().contains(searchtext.getText().toString().toLowerCase()))
                                                {
                                                    Log.i("Yes","match");
-                                                   searchclasses.add(new searchclass(nmap.get("name"),s3.getKey(),s.getKey(),s1.getKey(),s2.getKey(),nmap.get("image"),nmap.get("price")));
+                                                   searchclasses.add(new searchclass(nmap, s.getKey()));
                                                }
-                                           }
-                                       }
-                                   }
+                                           //}
+                                       //}
+                                   //}
                                }
                                setadapterk();
                            }
@@ -134,17 +133,17 @@ public class search extends AppCompatActivity {
             final ImageView image=(ImageView)view.findViewById(R.id.mainimage);
             final TextView texttitle=(TextView)view.findViewById(R.id.texttitle);
             final TextView price=(TextView)view.findViewById(R.id.price);
-            Picasso.get().load(lists.imagesearch).resize(170,145).centerCrop().into(image);
-            texttitle.setText(lists.namesearch);
-            price.setText("Price: "+lists.pricesearch);
+            //Picasso.get().load(lists.front_image).resize(170,145).centerCrop().into(image);
+            texttitle.setText(lists.name);
+            price.setText("Price: "+lists.price);
             mainlist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i("name",lists.namesearch);
-                    bundles.putString("id",lists.idsearch);
-                    bundles.putString("course",lists.coursesearch);
-                    bundles.putString("semester",lists.semestersearch);
-                    bundles.putString("subject",lists.subjectsearch);
+                    Log.i("name",lists.name);
+                    bundles.putString("id",lists.bookid);
+                    //bundles.putString("author",lists.author);
+                    //bundles.putString("semester",lists.category);
+                    //bundles.putString("subject",lists.description);
                     startActivity(new Intent(getApplicationContext(),Viewbook.class).putExtras(bundles).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
             });

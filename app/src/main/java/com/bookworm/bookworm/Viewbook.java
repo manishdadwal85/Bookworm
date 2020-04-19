@@ -35,9 +35,9 @@ public class Viewbook extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewbook);
         Intent intes=getIntent();
-        String course=intes.getStringExtra("course");
-        String semester=intes.getStringExtra("semester");
-        String subject=intes.getStringExtra("subject");
+        //String course=intes.getStringExtra("course");
+        //String semester=intes.getStringExtra("semester");
+        //String subject=intes.getStringExtra("subject");
         String id=intes.getStringExtra("id");
         imageviewpager=(ViewPager)findViewById(R.id.imageview);
         bookname=(TextView)findViewById(R.id.bookname);
@@ -50,13 +50,12 @@ public class Viewbook extends AppCompatActivity {
         progress=(RelativeLayout)findViewById(R.id.progress);
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
         progress.setVisibility(View.VISIBLE);
-        reference.child("Books").child(course)
-                .child(semester).child(subject).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("Books").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                        if(dataSnapshot.exists())
                        {
-                           Log.i("demo",""+dataSnapshot.child("Phone Number").getValue().toString());
+                           Log.i("demo",""+dataSnapshot.child("name").getValue().toString());
                            arrayList.add(new desclist(dataSnapshot.child("image").getValue().toString(),dataSnapshot.child("image2").getValue().toString()
                            ,dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("Description").getValue().toString()
                            ,dataSnapshot.child("price").getValue().toString(),dataSnapshot.child("Seller Address").getValue().toString()
