@@ -54,7 +54,9 @@ public class sell extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String categorySel,formatSel,tenureSel,languageSel,imageid1,imageid2;
     private CharSequence[] options={"Take Photo","Gallery","Close"};
-    private Integer REQUEST_CAMERA_1 = 101, SELECT_FILE_1 = 102, REQUEST_CAMERA_2 = 101, SELECT_FILE_2 = 102;
+    private Integer REQUEST_CAMERA_1 = 101, SELECT_FILE_1 = 102, REQUEST_CAMERA_2 = 103, SELECT_FILE_2 = 104;
+    private Uri fronImage, backImageUri;
+    String bookId;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -134,7 +136,7 @@ public class sell extends AppCompatActivity {
 //                            .child("Myad").child(subjectid).child("semester").setValue(semesters);
 //                    FirebaseDatabase.getInstance().getReference().child("users").child(sharedPreferences.getString("handle",""))
 //                            .child("Myad").child(subjectid).child("subjects").setValue(subjects);
-                    String bookId = FirebaseDatabase.getInstance().getReference().child("Books").push().getKey();
+                    bookId = FirebaseDatabase.getInstance().getReference().child("Books").push().getKey();
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("user_id").setValue(sharedPreferences.getString("handle",""));
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("name").setValue(book_name.getText().toString());
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("author").setValue(book_author.getText().toString());
@@ -166,8 +168,15 @@ public class sell extends AppCompatActivity {
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(sharedPreferences.getString("handle",""))
                             .child("Myad").child("status").setValue(getResources().getString(R.string.active));
+                    if(fronImage != null) {
+                        uploadfront(fronImage);
+                    }
+                    if(backImageUri != null) {
+                        uploadBack(backImageUri);
+                    }
 
                     Toast.makeText(getApplicationContext(),"Ad Published",Toast.LENGTH_LONG).show();
+
                     progresssell.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(getApplicationContext(),landingpage.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 }
@@ -314,21 +323,24 @@ public class sell extends AppCompatActivity {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 progresssell.setVisibility(View.VISIBLE);
                 Uri imagedata = (Uri) data.getExtras().get("data");
-                uploadfront(imagedata);
+                fronImage = imagedata;
+                //uploadfront(imagedata);
             }
         }else if (requestCode == REQUEST_CAMERA_2) {
             if (resultCode == Activity.RESULT_OK) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 progresssell.setVisibility(View.VISIBLE);
                 Uri imagedata = (Uri) data.getExtras().get("data");
-                uploadBack(imagedata);
+                backImageUri = imagedata;
+                //uploadBack(imagedata);
             }
         } else if (requestCode == SELECT_FILE_1) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri imagedata = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(sell.this.getContentResolver(), imagedata);
-                    uploadfront(imagedata);
+                    fronImage = imagedata;
+                    //uploadfront(imagedata);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -338,7 +350,8 @@ public class sell extends AppCompatActivity {
                 Uri imagedata = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(sell.this.getContentResolver(), imagedata);
-                    uploadBack(imagedata);
+                    backImageUri = imagedata;
+                    //uploadBack(imagedata);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -391,7 +404,7 @@ public class sell extends AppCompatActivity {
     }
 
     public void uploadfront(Uri imageUri) {
-        String date=new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());;
+        String date=new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         //FirebaseStorage storage = FirebaseStorage.getInstance();
         //StorageReference refrence = storage.getReferenceFromUrl("gs://bookworm-25e0d.appspot.com");
         final StorageReference storageReference = FirebaseStorage.getInstance().getReference("Uploads");
@@ -412,20 +425,13 @@ public class sell extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.i("image", task.getResult().toString()+ "status"+f);
                             imageid1=task.getResult().toString();
-                            if(f)
-                            {
-                                FirebaseDatabase.getInstance().getReference().child("Books").child("image2").setValue(imageid1);
-                                f=false;
-                                progresssell.setVisibility(View.INVISIBLE);
-                            }
-                            if(f2)
-                            {
 
-                                FirebaseDatabase.getInstance().getReference().child("Books").child("image").setValue(imageid1);
-                                Log.i("image logged", task.getResult().toString());
-                                f2=false;
+                                FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("front_image").setValue(imageid1);
+                                //FirebaseDatabase.getInstance().getReference().child("Books").child("image2").setValue(imageid1);
+
                                 progresssell.setVisibility(View.INVISIBLE);
-                            }
+
+
                         }
                     }
                 });
@@ -448,20 +454,12 @@ public class sell extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.i("image", task.getResult().toString()+ "status"+f);
                             imageid1=task.getResult().toString();
-                            if(f)
-                            {
-                                FirebaseDatabase.getInstance().getReference().child("Books").child("image2").setValue(imageid1);
-                                f=false;
-                                progresssell.setVisibility(View.INVISIBLE);
-                            }
-                            if(f2)
-                            {
+                                FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("back_image").setValue(imageid1);
+                                //FirebaseDatabase.getInstance().getReference().child("Books").child("image2").setValue(imageid1);
 
-                                FirebaseDatabase.getInstance().getReference().child("Books").child("image").setValue(imageid1);
-                                Log.i("image logged", task.getResult().toString());
-                                f2=false;
                                 progresssell.setVisibility(View.INVISIBLE);
-                            }
+
+
                         }
                     }
                 });
