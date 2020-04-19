@@ -3,4 +3,11 @@
     <color name="colorPrimary">#0077b5</color>
     <color name="colorPrimaryDark">#0077b5</color>
     <color name="colorAccent">#0077b5</color>
+    <color name="colorPrflBgd">#8a56ab</color>
+    <color name="colorPrflBack">#241333</color>
+    <color name="colorPrflTitle">#362742</color>
+    <color name="colorPrflSubtitle">#c5c9cf</color>
+    <color name="colorPrflTitleWhite">#ffffff</color>
+    <color name="colorPrflSubtitleWhite">#b796ce</color>
+
 </resources>

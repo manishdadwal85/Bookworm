@@ -174,7 +174,7 @@ public class landingpage extends AppCompatActivity
        if (id == R.id.nav_gallery) {
             startActivity(new Intent(getApplicationContext(),adsview.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         } else if (id == R.id.nav_slideshow) {
-           startActivity(new Intent(getApplicationContext(),Myprofile.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+           startActivity(new Intent(getApplicationContext(),UserProfile.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
        else if (id == R.id.nav_about) {
            AlertDialog.Builder builder = new AlertDialog.Builder(landingpage.this);
