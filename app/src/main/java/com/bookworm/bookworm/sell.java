@@ -143,7 +143,7 @@ public class sell extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("category").setValue(categorySel);
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("format").setValue(formatSel);
                     FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("language").setValue(languageSel);
-
+                    String freetext = book_name.getText().toString();
                     if(radionew.isSelected()){
                         FirebaseDatabase.getInstance().getReference().child("Books").child(bookId).child("condition").setValue(getResources().getString(R.string.nnew));
                     }else{
