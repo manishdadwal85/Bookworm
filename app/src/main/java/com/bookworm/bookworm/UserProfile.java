@@ -26,7 +26,7 @@ public class UserProfile extends AppCompatActivity {
     EditText phone;
     EditText pincode;
     ImageButton editpin;
-    ImageButton  editphone;
+    ImageButton editphone;
 
     FirebaseUser firebaseUser;
     DatabaseReference reference;
@@ -40,9 +40,13 @@ public class UserProfile extends AppCompatActivity {
         emailtxt = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
         pincode = findViewById(R.id.pincode);
+
         editphone = findViewById(R.id.editPhone);
+        editphone.setTag(R.drawable.ic_edit_24px);
+
         editpin = findViewById(R.id.editPin);
         editpin.setTag(R.drawable.ic_edit_24px);
+
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         email = firebaseUser.getEmail().replaceAll("[.]", "_");
@@ -68,13 +72,16 @@ public class UserProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Integer resource = (Integer) editpin.getTag();
 
-                if (resource == R.drawable.ic_edit_24px){
+                if (resource == R.drawable.ic_edit_24px) {
                     pincode.setEnabled(true);
+                    pincode.setBackgroundColor(getColor(android.R.color.holo_purple));
                     editpin.setImageResource(R.drawable.ic_done_24px);
                     editpin.setTag(R.drawable.ic_done_24px);
-                }
-                else{
+                } else {
+                    String pn = pincode.getText().toString();
+                    updateProfile("pincode", pn);
                     pincode.setEnabled(false);
+                    pincode.setBackgroundColor(getColor(android.R.color.transparent));
                     editpin.setImageResource(R.drawable.ic_edit_24px);
                     editpin.setTag(R.drawable.ic_edit_24px);
                 }
@@ -86,11 +93,33 @@ public class UserProfile extends AppCompatActivity {
         editphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                phone.setEnabled(true);
-                editphone.setImageResource(R.drawable.ic_done_24px);
-//                editphone.setBackgroundResource(R.drawable.ic_done_24px);
+                Integer resource = (Integer) editphone.getTag();
+
+                if (resource == R.drawable.ic_edit_24px) {
+                    phone.setEnabled(true);
+                    phone.setBackgroundColor(getColor(android.R.color.holo_purple));
+                    editphone.setImageResource(R.drawable.ic_done_24px);
+                    editphone.setTag(R.drawable.ic_done_24px);
+                } else {
+                    String ph = phone.getText().toString();
+                    updateProfile("phone", ph);
+                    phone.setEnabled(false);
+                    phone.setBackgroundColor(getColor(android.R.color.transparent));
+                    editphone.setImageResource(R.drawable.ic_edit_24px);
+                    editphone.setTag(R.drawable.ic_edit_24px);
+                }
+
             }
         });
 
     }
+
+    private void updateProfile(String fParam_name, String fParam_value) {
+
+        reference.child(fParam_name).setValue(fParam_value);
+
+    }
+
+    ;
+
 }
